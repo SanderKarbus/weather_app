@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import WeatherCard from './components/WeatherCard'
+import ForecastCard from './components/ForecastCard'
 import { fetchWeather } from './services/weatherService'
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
   const [error, setError] = useState(null)
   const [currentTime, setCurrentTime] = useState(new Date())
   const [lastUpdate, setLastUpdate] = useState(null)
+  const [viewMode, setViewMode] = useState('current') // 'current' või 'forecast'
 
   // Eesti suuremad linnud
   const estonianCities = [
@@ -71,15 +73,36 @@ function App() {
         {lastUpdate && (
           <p className="last-update">Viimati uuendatud: {lastUpdate.toLocaleTimeString('et-EE')}</p>
         )}
+        
+        <div className="view-tabs">
+          <button 
+            className={`tab-button ${viewMode === 'current' ? 'active' : ''}`}
+            onClick={() => setViewMode('current')}
+          >
+            Praegune ilm
+          </button>
+          <button 
+            className={`tab-button ${viewMode === 'forecast' ? 'active' : ''}`}
+            onClick={() => setViewMode('forecast')}
+          >
+            Ennustus (Homme)
+          </button>
+        </div>
       </header>
 
       {loading && <div className="loading">Laadime ilmaandmeid...</div>}
       {error && <div className="error">{error}</div>}
 
       <div className="counties-grid">
-        {counties.map(county => (
-          <WeatherCard key={county.code} county={county} />
-        ))}
+        {viewMode === 'current' ? (
+          counties.map(county => (
+            <WeatherCard key={county.code} county={county} />
+          ))
+        ) : (
+          counties.map(county => (
+            <ForecastCard key={county.code} city={county} />
+          ))
+        )}
       </div>
 
       <footer className="footer">

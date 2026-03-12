@@ -1,14 +1,15 @@
 # Eesti Ilmaennustus Rakendus
 
-Lihtne React + Vite veebirakenund Eesti maakondade ilmaennustuse jaoks.
+Lihtne React + Vite veebirakendus Eesti suuremate linnade ilmaennustuse jaoks.
 
 ## Omadused
 
-- 🌤️ Reaalajas ilmaennustus 17 Eesti maakonna jaoks
+- 🌤️ Reaalajas ilmaennustus 7 suurema linna jaoks (Tallinn, Tartu, Pärnu, Narva, Viljandi, Kuressaare, Kärdla)
 - 🎨 Ilusas ja reageeriva kasutajaliidese
-- 🔄 Automaatne ilmaandmete uuendamine
+- 🔄 Automaatne ilmaandmete uuendamine (iga 5 minuti järel)
 - 📱 Mobiili tvõrgus toetatud (responsive)
 - ⚡ Kiire ja lihtne lahendus
+- 🕐 Reaalajasel kellaaeg ja uuendamise ajakaitsmine
 
 ## Tehnoloogiad
 
@@ -61,8 +62,10 @@ src/
 ## Funktsionaalsus
 
 - **Ilmaandmete hankimine**: Open-Meteo API-st reaalajas
-- **Kaardiga kuvamine**: Iga maakond omakardi kaardis
+- **Kaardiga kuvamine**: Iga linn omakardi kaardis
 - **Kuvaandmed**: Temperatuur, "tundub", niiskus, tuul, pilved
+- **Automaatne uuendamine**: Andmed uuendatakse iga 5 minuti järel
+- **Kellaaeg**: Reaalajasel kellaaeg ja uuendamise timestamp
 
 ## Kriteeriumid
 

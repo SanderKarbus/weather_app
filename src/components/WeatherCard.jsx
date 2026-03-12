@@ -2,8 +2,7 @@ function WeatherCard({ county }) {
   if (!county.weather && county.error) {
     return (
       <div className="weather-card error">
-        <h3>{county.code}</h3>
-        <p>{county.name}</p>
+        <h3>{county.name}</h3>
         <p className="error-text">Viga: {county.error}</p>
       </div>
     )
@@ -12,14 +11,13 @@ function WeatherCard({ county }) {
   if (!county.weather) {
     return (
       <div className="weather-card loading-card">
-        <h3>{county.code}</h3>
-        <p>{county.name}</p>
+        <h3>{county.name}</h3>
         <p>Laadime...</p>
       </div>
     )
   }
 
-  const { main, weather, wind, clouds } = county.weather
+  const { main, weather, wind, clouds } = county.weather.current
 
   const getWeatherIcon = (weatherMain) => {
     switch (weatherMain?.toLowerCase()) {
@@ -53,8 +51,7 @@ function WeatherCard({ county }) {
   return (
     <div className="weather-card">
       <div className="card-header">
-        <h3>{county.code}</h3>
-        <span className="county-name">{county.name}</span>
+        <h3>{county.name}</h3>
       </div>
       
       <div className="weather-main">

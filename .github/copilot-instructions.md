@@ -4,7 +4,7 @@ Selle projektiga seotud spetsiifilised juhendid Copilot AI-le.
 
 ## Produkti kirjeldus
 
-Eesti Ilmaennustuse rakendus on lihtne React + Vite veebirakenend, mis kuvatab 17 Eesti maakonna reaalajaset ilmaennustust. Rakendus kasutab tasuta Open-Meteo API-t ilmaandmete hankimiseks.
+Eesti Ilmaennustuse rakendus on lihtne React + Vite veebirakenend, mis kuvatab 7 suurema linna reaalajaset ilmaennustust (Tallinn, Tartu, Pärnu, Narva, Viljandi, Kuressaare, Kärdla). Rakendus kasutab tasuta Open-Meteo API-t ilmaandmete hankimiseks ja uuendab andmeid automaatselt iga 5 minuti järel.
 
 ## Projekti struktuuri
 

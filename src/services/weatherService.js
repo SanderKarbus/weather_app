@@ -2,7 +2,7 @@
 export async function fetchWeather(lat, lon) {
   try {
     const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,cloud_cover&timezone=auto`
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,cloud_cover&hourly=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m,cloud_cover&timezone=auto`
     )
     
     if (!response.ok) {
@@ -46,9 +46,8 @@ export async function fetchWeather(lat, lon) {
       return weatherCodes[code] || { main: 'Unknown', description: 'Teadmata' }
     }
     
-    const weatherInfo = getWeatherDescription(current.weather_code)
-    
-    return {
+    // Praegune ilm
+    const currentWeather = {
       main: {
         temp: current.temperature_2m,
         feels_like: current.apparent_temperature,
@@ -56,8 +55,8 @@ export async function fetchWeather(lat, lon) {
       },
       weather: [
         {
-          main: weatherInfo.main,
-          description: weatherInfo.description,
+          main: getWeatherDescription(current.weather_code).main,
+          description: getWeatherDescription(current.weather_code).description,
         },
       ],
       wind: {
@@ -66,6 +65,56 @@ export async function fetchWeather(lat, lon) {
       clouds: {
         all: current.cloud_cover,
       },
+    }
+    
+    // Homse ilma ennustus - kindlatel kellaaegadel
+    const hours = data.hourly
+    const forecastHours = [0, 3, 6, 9, 12, 15, 18, 21]
+    
+    // Leiame homse päeva andmeid
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    const tomorrowDateStr = tomorrow.toISOString().split('T')[0]
+    
+    const forecast = forecastHours.map(hour => {
+      // Leida vastaval kellaaegadel andmeid järgmisest päevast
+      const timeStr = `${tomorrowDateStr}T${String(hour).padStart(2, '0')}:00`
+      const index = hours.time.findIndex(t => t.startsWith(timeStr))
+      
+      if (index === -1) {
+        return null
+      }
+      
+      const temp = hours.temperature_2m[index]
+      const code = hours.weather_code[index]
+      const wind = hours.wind_speed_10m[index]
+      const humidity = hours.relative_humidity_2m[index]
+      const cloud = hours.cloud_cover[index]
+      
+      return {
+        time: `${String(hour).padStart(2, '0')}:00`,
+        main: {
+          temp,
+          humidity,
+        },
+        weather: [
+          {
+            main: getWeatherDescription(code).main,
+            description: getWeatherDescription(code).description,
+          },
+        ],
+        wind: {
+          speed: wind,
+        },
+        clouds: {
+          all: cloud,
+        },
+      }
+    }).filter(f => f !== null)
+    
+    return {
+      current: currentWeather,
+      forecast: forecast,
     }
   } catch (error) {
     console.error('Weather fetch error:', error)
