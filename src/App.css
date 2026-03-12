@@ -1,0 +1,212 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.header {
+  text-align: center;
+  color: white;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.2);
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.header .time {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  font-family: 'Courier New', monospace;
+}
+
+.header .date {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-top: 0.5rem;
+}
+
+.header .last-update {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.loading {
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+  padding: 2rem;
+}
+
+.error {
+  background-color: #ff6b6b;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  margin: 1rem 2rem;
+  text-align: center;
+}
+
+.counties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  flex: 1;
+}
+
+.weather-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.weather-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #667eea;
+}
+
+.county-name {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.weather-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.weather-icon {
+  font-size: 3rem;
+  margin-right: 1rem;
+}
+
+.temperature {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #667eea;
+}
+
+.weather-description {
+  text-align: center;
+  margin: 1rem 0;
+  color: #666;
+  font-style: italic;
+}
+
+.weather-description p {
+  margin: 0;
+}
+
+.weather-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+}
+
+.detail .label {
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 0.25rem;
+}
+
+.detail .value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.weather-card.error {
+  background-color: #ffe6e6;
+  border: 2px solid #ff6b6b;
+}
+
+.weather-card.error .error-text {
+  color: #d32f2f;
+  font-weight: bold;
+  margin: 0.5rem 0 0 0;
+}
+
+.loading-card {
+  background-color: #f0f0f0;
+  color: #999;
+}
+
+.footer {
+  text-align: center;
+  color: white;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.3);
+  margin-top: auto;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .counties-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+  }
+
+  .temperature {
+    font-size: 1.5rem;
+  }
+
+  .weather-icon {
+    font-size: 2rem;
+    margin-right: 0.5rem;
+  }
+}
