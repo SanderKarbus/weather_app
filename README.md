@@ -2,25 +2,25 @@
 
 Ilus React + Vite veebirakendus Eesti ilmaennustuste jaoks. Näitab reaalajases ilmateadet 7 suuremast linnast ja võimaldab otsida mistahes asukoha ilmaennustust maailmas!
 
-## ✨ Funktionaalsus
+## Funktionaalsus
 
-- 🌤️ **Reaalajane ilmateade** - 7 Eesti suurema linna ilm
-- 🔍 **Asukoha otsing** - Sisestada mistahes linna nimi ja näha selle ilmateadet
-- 📊 **Tunniennustus** - 8 tunni ennustus (00:00, 03:00, ..., 21:00)
-- 🗺️ **Interaktiivne kaart** - OpenStreetMap kaart otsitud asukoha kohta
-- ⏰ **Reaalajane kell** - Jooksev kell ja kuupäev küljekanalis
-- 🔄 **Automaatne uuendus** - Andmete uuendus iga 5 minuti järel
-- 📱 **Responsive disain** - Töötab kõigil seadmetel
+- Reaalajane ilmateade - 7 Eesti suurema linna ilm
+- Asukoha otsing - Sisestada mistahes linna nimi ja näha selle ilmateadet
+- Tunniennustus - 8 tunni ennustus (00:00, 03:00, ..., 21:00)
+- Interaktiivne kaart - OpenStreetMap kaart otsitud asukoha kohta
+- Reaalajane kell - Jooksev kell ja kuupäev küljekanalis
+- Automaatne uuendus - Andmete uuendus iga 5 minuti järel
+- Responsive disain - Töötab kõigil seadmetel
 
-## 🛠️ Tehnoloogiad
+## Tehnoloogiad
 
-- **React 19** - Kasutajaliidese raamistik
-- **Vite 8** - Kiire ehitamise tööriist
-- **Leaflet + React-Leaflet** - Interaktiivne kaardistamine
-- **Open-Meteo API** - Tasuta ilmaandmed (geocoding + ilm)
-- **CSS3 Grid** - Paika pandud kaardi paigutus
+- React 19 - Kasutajaliidese raamistik
+- Vite 8 - Kiire ehitamise tööriist
+- Leaflet + React-Leaflet - Interaktiivne kaardistamine
+- Open-Meteo API - Tasuta ilmaandmed (geocoding + ilm)
+- CSS3 Grid - Paika pandud kaardi paigutus
 
-## 🚀 Käivitamine
+## Käivitamine
 
 ### Eeltingimused
 - Node.js (v16+)
@@ -48,7 +48,7 @@ npm run build
 npm run deploy
 ```
 
-## 📁 Projekti struktuur
+## Projekti struktuur
 
 ```
 src/
@@ -63,23 +63,23 @@ src/
 └── index.css                  # Globaalse CSS
 ```
 
-## 📍 Kasutatavad API'd
+## Kasutatavad API'd
 
-1. **Open-Meteo Weather API**
+1. Open-Meteo Weather API
    - Ilmaennustus: `https://api.open-meteo.com/v1/forecast`
    - Asukoha otsing: `https://geocoding-api.open-meteo.com/v1/search`
 
-## 🌍 Kasutatavad ressursid
+## Kasutatavad ressursid
 
-- **OpenStreetMap** - Kaardi andmed
-- **Leaflet** - Kaardi raamistik
-- **OpenWeather WMO koodid** - Ilmakoodide käsitlus
+- OpenStreetMap - Kaardi andmed
+- Leaflet - Kaardi raamistik
+- OpenWeather WMO koodid - Ilmakoodide käsitlus
 
-## 📝 Märkused
+## Märkused
 
-- Rakendus laadib andmeid **tasuta API**'dest
+- Rakendus laadib andmeid tasuta API'dest
 - Geolokatsiooni ei kasutata - kasutaja sisestab linna nime
-- Kood rakenduses on **puhas** ja ilma AI jäljedeta GitHub'is
+- Kood rakenduses on puhas ja ilma jäljedeta
 - Ehitatud TAK25 projekti jaoks
 ```
 
