@@ -6,6 +6,7 @@ import { fetchWeather } from './services/weatherService'
 
 function App() {
   const [counties, setCounties] = useState([])
+  const [currentLocation, setCurrentLocation] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -42,6 +43,32 @@ function App() {
     }
   }
 
+  // Praeguse asukoha hankimine
+  const loadCurrentLocation = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords
+          try {
+            const weatherData = await fetchWeather(latitude, longitude)
+            setCurrentLocation({
+              code: 'LOC',
+              name: 'Minu asukoht',
+              lat: latitude,
+              lon: longitude,
+              weather: weatherData
+            })
+          } catch (err) {
+            console.log('Asukoha ilmaandmete laadimine ebaõnnestus:', err)
+          }
+        },
+        (error) => {
+          console.log('Geolokatsiooni laadimine ebaõnnestus:', error)
+        }
+      )
+    }
+  }
+
   // Kellaja uuendamine
   useEffect(() => {
     const timer = setInterval(() => {
@@ -54,10 +81,12 @@ function App() {
   useEffect(() => {
     setLoading(true)
     loadWeatherData().finally(() => setLoading(false))
+    loadCurrentLocation()
 
     // Uuenda iga 5 minuti järel
     const refreshInterval = setInterval(() => {
       loadWeatherData()
+      loadCurrentLocation()
     }, 5 * 60 * 1000) // 5 minutit
 
     return () => clearInterval(refreshInterval)
@@ -95,9 +124,14 @@ function App() {
 
       <div className="counties-grid">
         {viewMode === 'current' ? (
-          counties.map(county => (
-            <WeatherCard key={county.code} county={county} />
-          ))
+          <>
+            {currentLocation && currentLocation.weather && (
+              <WeatherCard key={currentLocation.code} county={currentLocation} special={true} />
+            )}
+            {counties.map(county => (
+              <WeatherCard key={county.code} county={county} />
+            ))}
+          </>
         ) : (
           counties.map(county => (
             <ForecastCard key={county.code} city={county} />

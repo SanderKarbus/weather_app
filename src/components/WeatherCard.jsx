@@ -1,7 +1,7 @@
-function WeatherCard({ county }) {
+function WeatherCard({ county, special = false }) {
   if (!county.weather && county.error) {
     return (
-      <div className="weather-card error">
+      <div className={`weather-card error ${special ? 'special' : ''}`}>
         <h3>{county.name}</h3>
         <p className="error-text">Viga: {county.error}</p>
       </div>
@@ -10,7 +10,7 @@ function WeatherCard({ county }) {
 
   if (!county.weather) {
     return (
-      <div className="weather-card loading-card">
+      <div className={`weather-card loading-card ${special ? 'special' : ''}`}>
         <h3>{county.name}</h3>
         <p>Laadime...</p>
       </div>
@@ -49,7 +49,7 @@ function WeatherCard({ county }) {
   }
 
   return (
-    <div className="weather-card">
+    <div className={`weather-card ${special ? 'special' : ''}`}>
       <div className="card-header">
         <h3>{county.name}</h3>
       </div>
