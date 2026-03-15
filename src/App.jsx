@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import WeatherCard from './components/WeatherCard'
 import ForecastCard from './components/ForecastCard'
+import LeafletMap from './components/LeafletMap'
 import { fetchWeather } from './services/weatherService'
 
 function App() {
@@ -217,6 +218,9 @@ function App() {
       {viewMode === 'current' && currentLocation && currentLocation.weather && (
         <div className="location-weather-section">
           <WeatherCard key={currentLocation.code} county={currentLocation} special={true} />
+          <div className="location-map-wrapper">
+            <LeafletMap location={currentLocation} />
+          </div>
         </div>
       )}
 

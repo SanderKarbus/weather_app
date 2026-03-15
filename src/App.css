@@ -213,6 +213,31 @@
   margin: 0 auto;
 }
 
+.location-map-wrapper {
+  max-width: 600px;
+  margin: 1.5rem auto 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.map-container {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.map-placeholder {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
 .loading {
   text-align: center;
   color: white;
