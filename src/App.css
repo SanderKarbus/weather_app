@@ -89,6 +89,39 @@
   cursor: not-allowed;
 }
 
+.location-select {
+  padding: 0.6rem 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.location-select:hover {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.location-select:focus {
+  outline: none;
+  border-color: white;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.location-select option {
+  background: #667eea;
+  color: white;
+  padding: 0.5rem;
+}
+
+.location-select option:hover {
+  background: #764ba2;
+}
+
 .tab-button.reset-button {
   background: rgba(255, 100, 100, 0.3);
   border-color: rgba(255, 255, 255, 0.7);
@@ -142,9 +175,14 @@
   transition: all 0.3s;
 }
 
-.location-submit-btn:hover {
+.location-submit-btn:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.9);
   transform: scale(1.05);
+}
+
+.location-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .location-hint {
@@ -318,6 +356,20 @@
   font-size: 1.1rem;
   font-weight: bold;
   color: #333;
+}
+
+/* Spetsiaalsed stiilid gradient kaartidele */
+.weather-card.special .detail {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.weather-card.special .detail .label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.weather-card.special .detail .value {
+  color: white;
 }
 
 .weather-card.error {
