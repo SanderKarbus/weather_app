@@ -99,6 +99,61 @@
   border-color: white;
 }
 
+.location-input-section {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 1.5rem 2rem;
+  margin: 1rem 2rem;
+  border-radius: 8px;
+}
+
+.location-input-section form {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.location-input {
+  padding: 0.7rem 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  min-width: 300px;
+}
+
+.location-input:focus {
+  outline: none;
+  border-color: white;
+  background: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.location-submit-btn {
+  padding: 0.7rem 1.5rem;
+  background: white;
+  color: #667eea;
+  border: 2px solid white;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.location-submit-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.05);
+}
+
+.location-hint {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  margin: 0.8rem 0 0 0;
+}
+
 .location-error {
   background-color: #ff8c8c;
   color: white;
@@ -116,7 +171,7 @@
 }
 
 .location-weather-section .weather-card {
-  max-width: 400px;
+  max-width: 600px;
   margin: 0 auto;
 }
 

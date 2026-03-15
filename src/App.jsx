@@ -7,8 +7,8 @@ import { fetchWeather } from './services/weatherService'
 function App() {
   const [counties, setCounties] = useState([])
   const [currentLocation, setCurrentLocation] = useState(null)
-  const [locationLoading, setLocationLoading] = useState(false)
-  const [locationError, setLocationError] = useState(null)
+  const [locationInput, setLocationInput] = useState('')
+  const [showLocationInput, setShowLocationInput] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -45,66 +45,42 @@ function App() {
     }
   }
 
-  // Praeguse asukoha hankimine (manuaalse nupuga)
-  const requestCurrentLocation = async () => {
-    if (!navigator.geolocation) {
-      setLocationError('Teie brauseril puudub geolokatsiooni tugi')
-      return
+  // Praeguse asukoha hankimine koordinaatidelt
+  const loadLocationByCoords = async (lat, lon) => {
+    try {
+      const weatherData = await fetchWeather(lat, lon)
+      setCurrentLocation({
+        code: 'LOC',
+        name: 'Minu asukoht',
+        lat: lat,
+        lon: lon,
+        weather: weatherData
+      })
+      setLocationInput('')
+      setShowLocationInput(false)
+    } catch (err) {
+      console.error('Asukoha ilmaandmete viga:', err)
+      alert('Ilmaandmete laadimine ebaõnnestus. Kontrolli koordinaate.')
     }
+  }
 
-    setLocationLoading(true)
-    setLocationError(null)
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        try {
-          const { latitude, longitude } = position.coords
-          console.log('Saadi location:', latitude, longitude)
-          
-          const weatherData = await fetchWeather(latitude, longitude)
-          console.log('Saadi ilmaandmed:', weatherData)
-          
-          setCurrentLocation({
-            code: 'LOC',
-            name: 'Minu asukoht',
-            lat: latitude,
-            lon: longitude,
-            weather: weatherData
-          })
-          setLocationError(null)
-          setLocationLoading(false)
-        } catch (err) {
-          console.error('Asukoha ilmaandmete viga:', err)
-          setLocationError('Ilmaandmete laadimine ebaõnnestus: ' + err.message)
-          setLocationLoading(false)
-        }
-      },
-      (error) => {
-        console.error('Geolokatsiooni viga:', error)
-        setLocationLoading(false)
-        
-        if (error.code === error.PERMISSION_DENIED) {
-          setLocationError('Geolokatsiooni õigused keelati. Kontrolli brauseri seadeid.')
-        } else if (error.code === error.POSITION_UNAVAILABLE) {
-          setLocationError('Asukohta ei õnnestunud määrata. Proovi uuesti.')
-        } else if (error.code === error.TIMEOUT) {
-          setLocationError('Asukoha otsing võttis liiga kaua aega. Proovi uuesti.')
-        } else {
-          setLocationError('Viga asukoha otsimisega: ' + error.message)
-        }
-      },
-      {
-        timeout: 30000, // 30 sekundit
-        enableHighAccuracy: false,
-        maximumAge: 60000 // kasuta cached location 1 min jooksul
-      }
-    )
+  const handleLocationSubmit = (e) => {
+    e.preventDefault()
+    
+    // Kontrolli kas on käigus "lat,lon" vorming
+    const coords = locationInput.trim().split(',').map(c => parseFloat(c.trim()))
+    
+    if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+      loadLocationByCoords(coords[0], coords[1])
+    } else {
+      alert('Sisesta koordinaadid formaadis: lat,lon (näit: 59.4370,24.7536)')
+    }
   }
 
   const resetLocation = () => {
     setCurrentLocation(null)
-    setLocationError(null)
-    setLocationLoading(false)
+    setLocationInput('')
+    setShowLocationInput(false)
   }
 
   // Kellaja uuendamine
@@ -157,10 +133,9 @@ function App() {
               {!currentLocation ? (
                 <button 
                   className="tab-button location-button"
-                  onClick={requestCurrentLocation}
-                  disabled={locationLoading}
+                  onClick={() => setShowLocationInput(!showLocationInput)}
                 >
-                  {locationLoading ? 'Laadime...⏳' : '📍 Minu asukoht'}
+                  📍 Sisesta asukoht
                 </button>
               ) : (
                 <button 
@@ -175,7 +150,23 @@ function App() {
         </div>
       </header>
 
-      {locationError && <div className="location-error">{locationError}</div>}
+      {showLocationInput && (
+        <div className="location-input-section">
+          <form onSubmit={handleLocationSubmit}>
+            <input
+              type="text"
+              placeholder="Sisesta: lat,lon (näit: 59.4370,24.7536)"
+              value={locationInput}
+              onChange={(e) => setLocationInput(e.target.value)}
+              className="location-input"
+            />
+            <button type="submit" className="location-submit-btn">
+              Laadi ilm
+            </button>
+          </form>
+          <p className="location-hint">Näiteks: Tallinn = 59.4370,24.7536 | Tartu = 58.3766,26.7314</p>
+        </div>
+      )}
 
       {loading && <div className="loading">Laadime ilmaandmeid...</div>}
       {error && <div className="error">{error}</div>}
