@@ -2,6 +2,8 @@
 
 Ilus React + Vite veebirakendus Eesti ilmaennustuste jaoks. Näitab reaalajases ilmateadet 7 suuremast linnast ja võimaldab otsida mistahes asukoha ilmaennustust maailmas!
 
+**Avalik link:** https://SanderKarbus.github.io/weather_app/
+
 ## Funktionaalsus
 
 - Reaalajane ilmateade - 7 Eesti suurema linna ilm
