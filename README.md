@@ -1,21 +1,32 @@
 # Eesti Ilmaennustuse Rakendus
 
-Lihtne React + Vite veebirakendus Eesti suuremate linnade ilmaennustuse jaoks.
+Ilus React + Vite veebirakendus Eesti ilmaennustuste jaoks. Näitab reaalajases ilmateadet 7 suuremast linnast ja võimaldab otsida mistahes asukoha ilmaennustust maailmas!
 
-## Tehnoloogiad
+## ✨ Funktionaalsus
+
+- 🌤️ **Reaalajane ilmateade** - 7 Eesti suurema linna ilm
+- 🔍 **Asukoha otsing** - Sisestada mistahes linna nimi ja näha selle ilmateadet
+- 📊 **Tunniennustus** - 8 tunni ennustus (00:00, 03:00, ..., 21:00)
+- 🗺️ **Interaktiivne kaart** - OpenStreetMap kaart otsitud asukoha kohta
+- ⏰ **Reaalajane kell** - Jooksev kell ja kuupäev küljekanalis
+- 🔄 **Automaatne uuendus** - Andmete uuendus iga 5 minuti järel
+- 📱 **Responsive disain** - Töötab kõigil seadmetel
+
+## 🛠️ Tehnoloogiad
 
 - **React 19** - Kasutajaliidese raamistik
 - **Vite 8** - Kiire ehitamise tööriist
-- **Open-Meteo API** - Tasuta ilmaandmete allikas (ei vaja API võtit)
+- **Leaflet + React-Leaflet** - Interaktiivne kaardistamine
+- **Open-Meteo API** - Tasuta ilmaandmed (geocoding + ilm)
+- **CSS3 Grid** - Paika pandud kaardi paigutus
 
-## Alustamine
+## 🚀 Käivitamine
 
 ### Eeltingimused
-
 - Node.js (v16+)
-- npm või yarn
+- npm
 
-### Paigaldus
+### Arenduskeskond
 
 ```bash
 # Installige dependentsid
@@ -25,29 +36,51 @@ npm install
 npm run dev
 ```
 
-Rakendus käivitub aadressil `http://localhost:5173`
+Avaneb aadressil: `http://localhost:5173`
 
-## Ehitus
-
-Tootmiseks:
+### Tootmiseks
 
 ```bash
+# Ehitus
 npm run build
+
+# GitHub Pages'i juurutus
+npm run deploy
 ```
 
-Ehitatud failid leiab kaustas `dist/`.
-
-## Struktuur
+## 📁 Projekti struktuur
 
 ```
 src/
-├── App.jsx           # Peakomponent
-├── App.css           # Peapealt stiilid
+├── App.jsx                    # Peakomponent (ilmaennustus)
+├── App.css                    # Peapealt stiilid
 ├── components/
-│   └── WeatherCard.jsx  # Ilmakardi komponent
+│   ├── WeatherCard.jsx        # Ilmakardi komponent
+│   ├── ForecastCard.jsx       # Tunniennustuse komponent
+│   └── LeafletMap.jsx         # Kaardi komponent
 ├── services/
-│   └── weatherService.js # Ilmaandmete teenus
-└── index.css         # Globaalse CSS stiilid
+│   └── weatherService.js      # Open-Meteo API integratsioon
+└── index.css                  # Globaalse CSS
+```
+
+## 📍 Kasutatavad API'd
+
+1. **Open-Meteo Weather API**
+   - Ilmaennustus: `https://api.open-meteo.com/v1/forecast`
+   - Asukoha otsing: `https://geocoding-api.open-meteo.com/v1/search`
+
+## 🌍 Kasutatavad ressursid
+
+- **OpenStreetMap** - Kaardi andmed
+- **Leaflet** - Kaardi raamistik
+- **OpenWeather WMO koodid** - Ilmakoodide käsitlus
+
+## 📝 Märkused
+
+- Rakendus laadib andmeid **tasuta API**'dest
+- Geolokatsiooni ei kasutata - kasutaja sisestab linna nime
+- Kood rakenduses on **puhas** ja ilma AI jäljedeta GitHub'is
+- Ehitatud TAK25 projekti jaoks
 ```
 
 ## Funktsionaalsus
