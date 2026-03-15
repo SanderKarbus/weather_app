@@ -7,6 +7,8 @@ import { fetchWeather } from './services/weatherService'
 function App() {
   const [counties, setCounties] = useState([])
   const [currentLocation, setCurrentLocation] = useState(null)
+  const [locationLoading, setLocationLoading] = useState(false)
+  const [locationError, setLocationError] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -43,30 +45,66 @@ function App() {
     }
   }
 
-  // Praeguse asukoha hankimine
-  const loadCurrentLocation = async () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords
-          try {
-            const weatherData = await fetchWeather(latitude, longitude)
-            setCurrentLocation({
-              code: 'LOC',
-              name: 'Minu asukoht',
-              lat: latitude,
-              lon: longitude,
-              weather: weatherData
-            })
-          } catch (err) {
-            console.log('Asukoha ilmaandmete laadimine ebaõnnestus:', err)
-          }
-        },
-        (error) => {
-          console.log('Geolokatsiooni laadimine ebaõnnestus:', error)
-        }
-      )
+  // Praeguse asukoha hankimine (manuaalse nupuga)
+  const requestCurrentLocation = async () => {
+    if (!navigator.geolocation) {
+      setLocationError('Teie brauseril puudub geolokatsiooni tugi')
+      return
     }
+
+    setLocationLoading(true)
+    setLocationError(null)
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords
+          console.log('Saadi location:', latitude, longitude)
+          
+          const weatherData = await fetchWeather(latitude, longitude)
+          console.log('Saadi ilmaandmed:', weatherData)
+          
+          setCurrentLocation({
+            code: 'LOC',
+            name: 'Minu asukoht',
+            lat: latitude,
+            lon: longitude,
+            weather: weatherData
+          })
+          setLocationError(null)
+          setLocationLoading(false)
+        } catch (err) {
+          console.error('Asukoha ilmaandmete viga:', err)
+          setLocationError('Ilmaandmete laadimine ebaõnnestus: ' + err.message)
+          setLocationLoading(false)
+        }
+      },
+      (error) => {
+        console.error('Geolokatsiooni viga:', error)
+        setLocationLoading(false)
+        
+        if (error.code === error.PERMISSION_DENIED) {
+          setLocationError('Geolokatsiooni õigused keelati. Kontrolli brauseri seadeid.')
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          setLocationError('Asukohta ei õnnestunud määrata. Proovi uuesti.')
+        } else if (error.code === error.TIMEOUT) {
+          setLocationError('Asukoha otsing võttis liiga kaua aega. Proovi uuesti.')
+        } else {
+          setLocationError('Viga asukoha otsimisega: ' + error.message)
+        }
+      },
+      {
+        timeout: 30000, // 30 sekundit
+        enableHighAccuracy: false,
+        maximumAge: 60000 // kasuta cached location 1 min jooksul
+      }
+    )
+  }
+
+  const resetLocation = () => {
+    setCurrentLocation(null)
+    setLocationError(null)
+    setLocationLoading(false)
   }
 
   // Kellaja uuendamine
@@ -81,12 +119,10 @@ function App() {
   useEffect(() => {
     setLoading(true)
     loadWeatherData().finally(() => setLoading(false))
-    loadCurrentLocation()
 
     // Uuenda iga 5 minuti järel
     const refreshInterval = setInterval(() => {
       loadWeatherData()
-      loadCurrentLocation()
     }, 5 * 60 * 1000) // 5 minutit
 
     return () => clearInterval(refreshInterval)
@@ -116,22 +152,45 @@ function App() {
           >
             Ennustus (Homme)
           </button>
+          {viewMode === 'current' && (
+            <>
+              {!currentLocation ? (
+                <button 
+                  className="tab-button location-button"
+                  onClick={requestCurrentLocation}
+                  disabled={locationLoading}
+                >
+                  {locationLoading ? 'Laadime...⏳' : '📍 Minu asukoht'}
+                </button>
+              ) : (
+                <button 
+                  className="tab-button reset-button"
+                  onClick={resetLocation}
+                >
+                  ✕ Eemalda asukoht
+                </button>
+              )}
+            </>
+          )}
         </div>
       </header>
+
+      {locationError && <div className="location-error">{locationError}</div>}
 
       {loading && <div className="loading">Laadime ilmaandmeid...</div>}
       {error && <div className="error">{error}</div>}
 
+      {viewMode === 'current' && currentLocation && currentLocation.weather && (
+        <div className="location-weather-section">
+          <WeatherCard key={currentLocation.code} county={currentLocation} special={true} />
+        </div>
+      )}
+
       <div className="counties-grid">
         {viewMode === 'current' ? (
-          <>
-            {currentLocation && currentLocation.weather && (
-              <WeatherCard key={currentLocation.code} county={currentLocation} special={true} />
-            )}
-            {counties.map(county => (
-              <WeatherCard key={county.code} county={county} />
-            ))}
-          </>
+          counties.map(county => (
+            <WeatherCard key={county.code} county={county} />
+          ))
         ) : (
           counties.map(county => (
             <ForecastCard key={county.code} city={county} />
